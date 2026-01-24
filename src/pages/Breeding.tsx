@@ -19,7 +19,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, Baby, Clock, CheckCircle, XCircle, Loader2, Calendar } from 'lucide-react';
+import { Plus, Baby, Clock, CheckCircle, XCircle, Loader2, Calendar, Edit } from 'lucide-react';
 
 // Schema matching backend CreateInseminationData
 const breedingSchema = z.object({
@@ -60,6 +60,8 @@ const Breeding: React.FC = () => {
   
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [isAddOpen, setIsAddOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [editingRecord, setEditingRecord] = useState<BreedingRecord | null>(null);
   const [updateRecord, setUpdateRecord] = useState<BreedingRecord | null>(null);
   const [newStatus, setNewStatus] = useState<string>('');
   const [statusNotes, setStatusNotes] = useState('');
@@ -106,6 +108,22 @@ const Breeding: React.FC = () => {
     },
   });
 
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Partial<CreateBreedingData> }) => 
+      breedingApi.update(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['breeding'] });
+      queryClient.invalidateQueries({ queryKey: ['breeding-pending-checks'] });
+      toast({ title: t('success'), description: 'Insemination record updated successfully' });
+      setIsEditOpen(false);
+      setEditingRecord(null);
+      form.reset();
+    },
+    onError: () => {
+      toast({ title: t('failed'), description: t('error_occurred'), variant: 'destructive' });
+    },
+  });
+
   const updateStatusMutation = useMutation({
     mutationFn: ({ id, status, deliveryDate, notes }: { id: string; status: string; deliveryDate?: string; notes?: string }) =>
       breedingApi.updateStatus(id, status, deliveryDate, notes),
@@ -132,18 +150,69 @@ const Breeding: React.FC = () => {
       breed: formData.breed || undefined,
       notes: formData.notes || undefined,
     };
-    createMutation.mutate(apiData);
+    
+    if (editingRecord) {
+      // Update existing record
+      updateMutation.mutate({ id: editingRecord._id, data: apiData });
+    } else {
+      // Create new record
+      createMutation.mutate(apiData);
+    }
   };
 
   const handleUpdateStatus = () => {
     if (updateRecord && newStatus) {
+      // Validate delivery date is required when status is delivered
+      if (newStatus === 'delivered' && !deliveryDate) {
+        toast({ 
+          title: t('failed'), 
+          description: 'Delivery date is required when status is delivered', 
+          variant: 'destructive' 
+        });
+        return;
+      }
+
       updateStatusMutation.mutate({
         id: updateRecord._id,
         status: newStatus,
-        deliveryDate: newStatus === 'delivered' ? deliveryDate || undefined : undefined,
+        deliveryDate: newStatus === 'delivered' ? deliveryDate : undefined,
         notes: statusNotes || undefined,
       });
     }
+  };
+
+  const handleAddOpen = (open: boolean) => {
+    setIsAddOpen(open);
+    if (open) {
+      setEditingRecord(null);
+      form.reset({
+        animalId: '',
+        inseminationDate: format(new Date(), 'yyyy-MM-dd'),
+        doctorName: '',
+        semenType: '',
+        breed: '',
+        notes: '',
+      });
+    }
+  };
+
+  const handleEditOpen = (record: BreedingRecord) => {
+    setEditingRecord(record);
+    form.reset({
+      animalId: record.animal?._id || '',
+      inseminationDate: record.inseminationDate ? format(new Date(record.inseminationDate), 'yyyy-MM-dd') : '',
+      doctorName: record.doctorName || '',
+      semenType: record.semenType || '',
+      breed: record.breed || '',
+      notes: record.notes || '',
+    });
+    setIsEditOpen(true);
+  };
+
+  const handleEditClose = () => {
+    setIsEditOpen(false);
+    setEditingRecord(null);
+    form.reset();
   };
 
   const getDaysSinceInsemination = (dateStr: string) => {
@@ -155,20 +224,6 @@ const Breeding: React.FC = () => {
       return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     } catch {
       return 0;
-    }
-  };
-
-  const handleAddOpen = (open: boolean) => {
-    setIsAddOpen(open);
-    if (open) {
-      form.reset({
-        animalId: '',
-        inseminationDate: format(new Date(), 'yyyy-MM-dd'),
-        doctorName: '',
-        semenType: '',
-        breed: '',
-        notes: '',
-      });
     }
   };
 
@@ -397,21 +452,32 @@ const Breeding: React.FC = () => {
                           )}
                         </div>
                         
-                        {record.pregnancyStatus !== 'delivered' && (
+                        <div className="flex gap-2 mt-4">
                           <Button
                             variant="outline"
                             size="sm"
-                            className="w-full mt-4"
-                            onClick={() => {
-                              setUpdateRecord(record);
-                              setNewStatus('');
-                              setStatusNotes('');
-                              setDeliveryDate('');
-                            }}
+                            className="flex-1"
+                            onClick={() => handleEditOpen(record)}
                           >
-                            {t('update_status')}
+                            <Edit className="h-3 w-3 mr-1" />
+                            {t('edit')}
                           </Button>
-                        )}
+                          {record.pregnancyStatus !== 'delivered' && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="flex-1"
+                              onClick={() => {
+                                setUpdateRecord(record);
+                                setNewStatus('');
+                                setStatusNotes('');
+                                setDeliveryDate('');
+                              }}
+                            >
+                              {t('update_status')}
+                            </Button>
+                          )}
+                        </div>
                       </CardContent>
                     </Card>
                   );
@@ -487,6 +553,123 @@ const Breeding: React.FC = () => {
           </TabsContent>
         </Tabs>
 
+        {/* Edit Breeding Record Dialog */}
+        <Dialog open={isEditOpen} onOpenChange={(open) => !open && handleEditClose()}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>Edit Insemination Record</DialogTitle>
+            </DialogHeader>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="animalId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('animal_name')}</FormLabel>
+                      <Select onValueChange={field.onChange} value={field.value} disabled>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select animal" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {animals?.data?.map((animal) => (
+                            <SelectItem key={animal._id} value={animal._id}>
+                              {animal.nickName} (#{animal.serialNumber})
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="inseminationDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('insemination_date')}</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="doctorName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('veterinarian')}</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Dr. Name" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="semenType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Semen Type</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="e.g., Jersey, HF" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="breed"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Breed</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Target breed" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="notes"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Notes</FormLabel>
+                      <FormControl>
+                        <Textarea {...field} rows={2} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <div className="flex gap-2 justify-end">
+                  <Button type="button" variant="outline" onClick={handleEditClose}>
+                    {t('cancel')}
+                  </Button>
+                  <Button type="submit" disabled={updateMutation.isPending}>
+                    {updateMutation.isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                    {t('save')}
+                  </Button>
+                </div>
+              </form>
+            </Form>
+          </DialogContent>
+        </Dialog>
+
         {/* Update Status Dialog */}
         <Dialog open={!!updateRecord} onOpenChange={(open) => !open && setUpdateRecord(null)}>
           <DialogContent className="max-w-md">
@@ -508,22 +691,44 @@ const Breeding: React.FC = () => {
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="pregnant_confirmed">{t('status_confirmed')}</SelectItem>
-                    <SelectItem value="failed">{t('status_failed')}</SelectItem>
-                    <SelectItem value="delivered">{t('status_delivered')}</SelectItem>
+                    {/* Status transitions based on current status */}
+                    {updateRecord?.pregnancyStatus === 'check_pending' && (
+                      <>
+                        <SelectItem value="pregnant_confirmed">{t('status_confirmed')}</SelectItem>
+                        <SelectItem value="failed">{t('status_failed')}</SelectItem>
+                      </>
+                    )}
+                    {updateRecord?.pregnancyStatus === 'pregnant_confirmed' && (
+                      <>
+                        <SelectItem value="delivered">{t('status_delivered')}</SelectItem>
+                        <SelectItem value="failed">{t('status_failed')}</SelectItem>
+                      </>
+                    )}
                   </SelectContent>
                 </Select>
+                {updateRecord?.pregnancyStatus === 'check_pending' && (
+                  <p className="text-xs text-muted-foreground mt-1">
+                    First confirm pregnancy, then mark as delivered later
+                  </p>
+                )}
               </div>
 
               {newStatus === 'delivered' && (
                 <div>
-                  <label className="text-sm font-medium">Delivery Date</label>
+                  <label className="text-sm font-medium">
+                    Delivery Date <span className="text-destructive">*</span>
+                  </label>
                   <Input
                     type="date"
                     value={deliveryDate}
                     onChange={(e) => setDeliveryDate(e.target.value)}
                     className="mt-1"
+                    required
+                    max={format(new Date(), 'yyyy-MM-dd')}
                   />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Required. Format: YYYY-MM-DD (e.g., {format(new Date(), 'yyyy-MM-dd')})
+                  </p>
                 </div>
               )}
 
@@ -537,7 +742,7 @@ const Breeding: React.FC = () => {
                   placeholder="Optional notes"
                 />
               </div>
-
+(newStatus === 'delivered' && !deliveryDate) || 
               <div className="flex gap-2 justify-end">
                 <Button variant="outline" onClick={() => setUpdateRecord(null)}>
                   {t('cancel')}

@@ -35,7 +35,7 @@ const CHART_COLORS = [
 // Schema matching backend CreateExpenseData
 const expenseSchema = z.object({
   name: z.string().min(1, 'Name is required'),
-  category: z.enum(['feed', 'medicine', 'labor', 'equipment', 'maintenance', 'transport', 'other']),
+  category: z.enum(['feed', 'medicine', 'doctor', 'labor', 'equipment', 'maintenance', 'transport', 'other']),
   amount: z.number().min(0.01, 'Amount must be greater than 0'),
   date: z.string().optional(),
   notes: z.string().optional(),
@@ -46,6 +46,7 @@ type ExpenseFormData = z.infer<typeof expenseSchema>;
 const categoryLabels: Record<string, string> = {
   feed: 'cat_feed',
   medicine: 'cat_medicine',
+  doctor: 'Doctor',
   labor: 'cat_labor',
   equipment: 'cat_equipment',
   maintenance: 'cat_maintenance',
@@ -271,6 +272,7 @@ const Expenses: React.FC = () => {
                           <SelectContent>
                             <SelectItem value="feed">{t('cat_feed')}</SelectItem>
                             <SelectItem value="medicine">{t('cat_medicine')}</SelectItem>
+                            <SelectItem value="doctor">Doctor</SelectItem>
                             <SelectItem value="labor">{t('cat_labor')}</SelectItem>
                             <SelectItem value="equipment">{t('cat_equipment')}</SelectItem>
                             <SelectItem value="maintenance">Maintenance</SelectItem>
@@ -403,6 +405,7 @@ const Expenses: React.FC = () => {
               <SelectItem value="all">{t('all')}</SelectItem>
               <SelectItem value="feed">{t('cat_feed')}</SelectItem>
               <SelectItem value="medicine">{t('cat_medicine')}</SelectItem>
+              <SelectItem value="doctor">Doctor</SelectItem>
               <SelectItem value="labor">{t('cat_labor')}</SelectItem>
               <SelectItem value="equipment">{t('cat_equipment')}</SelectItem>
               <SelectItem value="maintenance">Maintenance</SelectItem>
@@ -515,6 +518,7 @@ const Expenses: React.FC = () => {
                         <SelectContent>
                           <SelectItem value="feed">{t('cat_feed')}</SelectItem>
                           <SelectItem value="medicine">{t('cat_medicine')}</SelectItem>
+                          <SelectItem value="doctor">Doctor</SelectItem>
                           <SelectItem value="labor">{t('cat_labor')}</SelectItem>
                           <SelectItem value="equipment">{t('cat_equipment')}</SelectItem>
                           <SelectItem value="maintenance">Maintenance</SelectItem>

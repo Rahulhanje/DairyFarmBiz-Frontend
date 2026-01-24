@@ -15,6 +15,8 @@ import { Milk, Loader2, Eye, EyeOff } from 'lucide-react';
 const signupSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.string().email('Invalid email address'),
+  phone: z.string().min(10, 'WhatsApp number is required').regex(/^[0-9]{10}$/, 'WhatsApp number must be exactly 10 digits'),
+  countryCode: z.string().default('+91'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
   confirmPassword: z.string(),
 }).refine((data) => data.password === data.confirmPassword, {
@@ -46,6 +48,8 @@ const Signup: React.FC = () => {
     defaultValues: {
       name: '',
       email: '',
+      phone: '',
+      countryCode: '+91',
       password: '',
       confirmPassword: '',
     },
@@ -54,7 +58,7 @@ const Signup: React.FC = () => {
   const onSubmit = async (data: SignupFormData) => {
     setIsLoading(true);
     try {
-      await signup(data.name, data.email, data.password);
+      await signup(data.name, data.email, data.password, data.phone, data.countryCode);
       toast({
         title: t('success'),
         description: t('signup_success'),
@@ -118,6 +122,33 @@ const Signup: React.FC = () => {
                         placeholder="name@example.com" 
                         {...field} 
                       />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>WhatsApp Number <span className="text-red-500">*</span></FormLabel>
+                    <FormControl>
+                      <div className="flex gap-2">
+                        <Input 
+                          type="text"
+                          value="+91"
+                          disabled
+                          className="w-20"
+                        />
+                        <Input 
+                          type="tel"
+                          placeholder="Phone number"
+                          maxLength={10}
+                          {...field} 
+                        />
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

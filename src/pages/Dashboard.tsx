@@ -98,10 +98,25 @@ const Dashboard: React.FC = () => {
 
   // Prepare expense breakdown data for pie chart from actual data
   const expenseBreakdown = summary?.expenses?.byCategory 
-    ? Object.entries(summary.expenses.byCategory).map(([name, value]) => ({
-        name: t(`cat_${name}` as any) || name,
-        value,
-      }))
+    ? Object.entries(summary.expenses.byCategory).map(([name, value]) => {
+        // Handle special cases like doctor, maintenance, transport
+        let displayName: string;
+        if (name === 'doctor') {
+          displayName = 'Doctor';
+        } else if (name === 'maintenance') {
+          displayName = 'Maintenance';
+        } else if (name === 'transport') {
+          displayName = 'Transport';
+        } else {
+          // Try translation, fallback to capitalized name
+          try {
+            displayName = t(`cat_${name}` as any);
+          } catch {
+            displayName = name.charAt(0).toUpperCase() + name.slice(1);
+          }
+        }
+        return { name: displayName, value };
+      })
     : [];
 
   return (

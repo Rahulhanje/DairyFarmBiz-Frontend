@@ -136,8 +136,8 @@ export const api = new ApiClient(API_BASE_URL);
 export const authApi = {
   login: (email: string, password: string) =>
     api.post<{ token: string; user: User }>('/auth/login', { email, password }),
-  signup: (name: string, email: string, password: string) =>
-    api.post<{ token: string; user: User }>('/auth/signup', { name, email, password }),
+  signup: (name: string, email: string, password: string, phone: string, countryCode?: string) =>
+    api.post<{ token: string; user: User }>('/auth/signup', { name, email, password, phone, countryCode: countryCode || '+91' }),
   getMe: () => api.get<User>('/auth/me'),
 };
 
