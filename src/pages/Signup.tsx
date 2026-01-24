@@ -15,7 +15,9 @@ import { Milk, Loader2, Eye, EyeOff } from 'lucide-react';
 const signupSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.string().email('Invalid email address'),
-  phone: z.string().min(10, 'WhatsApp number is required').regex(/^[0-9]{10}$/, 'WhatsApp number must be exactly 10 digits'),
+  phone: z.string().optional().refine((val) => !val || /^[0-9]{10}$/.test(val), {
+    message: 'WhatsApp number must be exactly 10 digits',
+  }),
   countryCode: z.string().default('+91'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
   confirmPassword: z.string(),
@@ -133,7 +135,7 @@ const Signup: React.FC = () => {
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>WhatsApp Number <span className="text-red-500">*</span></FormLabel>
+                    <FormLabel>WhatsApp Number <span className="text-muted-foreground text-sm">(Optional - for notifications)</span></FormLabel>
                     <FormControl>
                       <div className="flex gap-2">
                         <Input 
@@ -144,7 +146,7 @@ const Signup: React.FC = () => {
                         />
                         <Input 
                           type="tel"
-                          placeholder="Phone number"
+                          placeholder="9876543210"
                           maxLength={10}
                           {...field} 
                         />
