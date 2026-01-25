@@ -225,9 +225,7 @@ const Expenses: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold text-foreground">{t('expenses_title')}</h1>
-            <p className="text-muted-foreground text-sm">
-              {t('total_expenses')}: ₹{(summary?.total || 0).toLocaleString()}
-            </p>
+            <p className="text-muted-foreground text-sm">Track and manage all your farm expenses</p>
           </div>
           
           <Dialog open={isAddOpen} onOpenChange={handleAddOpen}>
@@ -347,6 +345,27 @@ const Expenses: React.FC = () => {
           </Dialog>
         </div>
 
+        {/* Total Expenses Summary Card */}
+        <Card className="bg-primary/5 border-primary/20">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground mb-1">{t('total_expenses')}</p>
+                <p className="text-3xl font-bold text-foreground">
+                  ₹{(summary?.total || 0).toLocaleString()}
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {data?.data?.length || 0} expense(s) 
+                  {(startDate || endDate || categoryFilter !== 'all') && ' (filtered)'}
+                </p>
+              </div>
+              <div className="h-12 w-12 rounded-lg bg-primary/20 flex items-center justify-center">
+                <Receipt className="h-6 w-6 text-primary" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Summary Chart */}
         {pieData.length > 0 && (
           <Card>
@@ -427,7 +446,8 @@ const Expenses: React.FC = () => {
         ) : (
           <Card>
             <CardContent className="p-0">
-              <div className="overflow-x-auto">
+              {/* Desktop Table View */}
+              <div className="hidden md:block overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -476,6 +496,47 @@ const Expenses: React.FC = () => {
                     ))}
                   </TableBody>
                 </Table>
+              </div>
+
+              {/* Mobile Card View */}
+              <div className="md:hidden p-4 space-y-3">
+                {data.data.map((expense) => (
+                  <div key={expense._id} className="border rounded-lg p-4 space-y-3">
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-1 flex-1 min-w-0">
+                        <div className="font-semibold text-base truncate">{expense.name}</div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-muted-foreground">{formatDate(expense.date)}</span>
+                        </div>
+                        <Badge variant="secondary" className="text-xs">
+                          {getCategoryLabel(expense.category)}
+                        </Badge>
+                      </div>
+                      <div className="flex gap-1 ml-2">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8"
+                          onClick={() => handleEdit(expense)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-destructive hover:text-destructive"
+                          onClick={() => setDeleteId(expense._id)}
+                        >
+                          <Trash className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between pt-3 border-t">
+                      <span className="text-sm text-muted-foreground">{t('amount')}</span>
+                      <span className="text-lg font-bold text-primary">₹{expense.amount.toLocaleString()}</span>
+                    </div>
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>

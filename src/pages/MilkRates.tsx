@@ -304,18 +304,18 @@ const MilkRates: React.FC = () => {
             </div>
             {lookupResult && (
               <div className="mt-4 p-4 bg-accent rounded-lg">
-                <p className="text-sm text-muted-foreground mb-2">
+                <p className="text-sm text-muted-foreground mb-3">
                   Rates for {formatDate(lookupDate)}:
                 </p>
-                <div className="flex gap-6">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-6">
                   <div>
-                    <span className="text-muted-foreground">{t('cow_rate')}:</span>{' '}
+                    <span className="text-sm text-muted-foreground">{t('cow_rate')}:</span>{' '}
                     <span className="font-semibold text-foreground">
                       {lookupResult.cowRate !== null ? `₹${lookupResult.cowRate.toFixed(2)}` : 'Not set'}
                     </span>
                   </div>
                   <div>
-                    <span className="text-muted-foreground">{t('buffalo_rate')}:</span>{' '}
+                    <span className="text-sm text-muted-foreground">{t('buffalo_rate')}:</span>{' '}
                     <span className="font-semibold text-foreground">
                       {lookupResult.buffaloRate !== null ? `₹${lookupResult.buffaloRate.toFixed(2)}` : 'Not set'}
                     </span>
@@ -339,46 +339,87 @@ const MilkRates: React.FC = () => {
                 description="No rate history available."
               />
             ) : (
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>{t('animal_type')}</TableHead>
-                      <TableHead>{t('effective_date')}</TableHead>
-                      <TableHead className="text-right">{t('rate_per_liter')}</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {rateHistory.map((rate: MilkRate) => (
-                      <TableRow key={rate._id}>
-                        <TableCell className="capitalize">{rate.animalType}</TableCell>
-                        <TableCell>{formatDate(rate.effectiveFrom)}</TableCell>
-                        <TableCell className="text-right">₹{rate.ratePerLiter.toFixed(2)}</TableCell>
-                        <TableCell className="text-right">
-                          <div className="flex justify-end gap-1">
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => handleEdit(rate)}
-                            >
-                              <Edit className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => setDeleteId(rate._id)}
-                              className="text-destructive hover:text-destructive"
-                            >
-                              <Trash className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </TableCell>
+              <>
+                {/* Desktop Table View */}
+                <div className="hidden md:block">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>{t('animal_type')}</TableHead>
+                        <TableHead>{t('effective_date')}</TableHead>
+                        <TableHead className="text-right">{t('rate_per_liter')}</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
+                    </TableHeader>
+                    <TableBody>
+                      {rateHistory.map((rate: MilkRate) => (
+                        <TableRow key={rate._id}>
+                          <TableCell className="capitalize font-medium">{rate.animalType}</TableCell>
+                          <TableCell>{formatDate(rate.effectiveFrom)}</TableCell>
+                          <TableCell className="text-right font-semibold">₹{rate.ratePerLiter.toFixed(2)}</TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex justify-end gap-1">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => handleEdit(rate)}
+                              >
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="text-destructive hover:text-destructive"
+                                onClick={() => setDeleteId(rate._id)}
+                              >
+                                <Trash className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+
+                {/* Mobile Card View */}
+                <div className="md:hidden space-y-3">
+                  {rateHistory.map((rate: MilkRate) => (
+                    <div key={rate._id} className="border rounded-lg p-4 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className="capitalize font-semibold text-base">{rate.animalType}</span>
+                          <span className="text-xs text-muted-foreground">
+                            {formatDate(rate.effectiveFrom)}
+                          </span>
+                        </div>
+                        <div className="flex gap-1">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={() => handleEdit(rate)}
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-destructive hover:text-destructive"
+                            onClick={() => setDeleteId(rate._id)}
+                          >
+                            <Trash className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between pt-2 border-t">
+                        <span className="text-sm text-muted-foreground">{t('rate_per_liter')}</span>
+                        <span className="text-lg font-bold">₹{rate.ratePerLiter.toFixed(2)}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
             )}
           </CardContent>
         </Card>

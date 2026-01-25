@@ -507,7 +507,8 @@ const MilkCollection: React.FC = () => {
             ) : (
               <Card>
                 <CardContent className="p-0">
-                  <div className="overflow-x-auto">
+                  {/* Desktop Table View */}
+                  <div className="hidden md:block overflow-x-auto">
                     <Table>
                       <TableHeader>
                         <TableRow>
@@ -560,6 +561,59 @@ const MilkCollection: React.FC = () => {
                         ))}
                       </TableBody>
                     </Table>
+                  </div>
+
+                  {/* Mobile Card View */}
+                  <div className="md:hidden p-4 space-y-3">
+                    {allCollections.map((collection) => (
+                      <div key={collection._id} className="border rounded-lg p-4 space-y-3">
+                        <div className="flex items-start justify-between">
+                          <div className="space-y-1">
+                            <div className="font-semibold text-base">{formatDate(collection.date)}</div>
+                            <div className="flex gap-2">
+                              <Badge variant="outline" className="text-xs">
+                                {collection.session === 'morning' ? t('morning') : t('evening')}
+                              </Badge>
+                              <Badge variant="secondary" className="text-xs">
+                                {collection.animalType === 'cow' ? t('cow') : t('buffalo')}
+                              </Badge>
+                            </div>
+                          </div>
+                          <div className="flex gap-1">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8"
+                              onClick={() => handleEdit(collection)}
+                            >
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8 text-destructive hover:text-destructive"
+                              onClick={() => setDeleteId(collection._id)}
+                            >
+                              <Trash className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-3 pt-3 border-t text-sm">
+                          <div>
+                            <div className="text-muted-foreground text-xs">{t('quantity')}</div>
+                            <div className="font-semibold">{collection.totalMilk.toFixed(1)} L</div>
+                          </div>
+                          <div>
+                            <div className="text-muted-foreground text-xs">{t('rate')}</div>
+                            <div className="font-semibold">₹{collection.rateApplied.toFixed(2)}</div>
+                          </div>
+                          <div>
+                            <div className="text-muted-foreground text-xs">{t('amount')}</div>
+                            <div className="font-bold text-primary">₹{collection.totalAmount.toLocaleString()}</div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                   
                   {/* Infinite scroll loader - only show when no filters */}
