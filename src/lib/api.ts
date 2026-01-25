@@ -1,6 +1,5 @@
 // Set your backend URL here or use environment variable
-// Temporarily hardcoded for mobile testing
-const API_BASE_URL = 'http://192.168.1.12:5000/api/v1';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://dairyfarmbiz-backend.onrender.com/api/v1';
 
 interface ApiError {
   message: string;
