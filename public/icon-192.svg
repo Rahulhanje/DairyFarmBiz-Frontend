@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
+  <defs>
+    <linearGradient id="gradient-192" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="192" height="192" fill="#f0f9ff"/>
+  <!-- Milk drop -->
+  <path d="M96 40 C96 40, 70 70, 70 100 C70 130, 80 152, 96 152 C112 152, 122 130, 122 100 C122 70, 96 40, 96 40 Z" 
+        fill="url(#gradient-192)" 
+        stroke="#2563eb" 
+        stroke-width="3"/>
+  <!-- Shine effect -->
+  <ellipse cx="85" cy="75" rx="15" ry="20" fill="white" opacity="0.4"/>
+</svg>
