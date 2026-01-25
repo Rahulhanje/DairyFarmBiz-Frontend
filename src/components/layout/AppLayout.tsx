@@ -157,12 +157,36 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 lg:ml-64">
+        <main className="flex-1 lg:ml-64 pb-20 lg:pb-6">
           <div className="container mx-auto px-4 py-6 max-w-7xl">
             {children}
           </div>
         </main>
       </div>
+
+      {/* Mobile Bottom Navigation Bar with Glassmorphism */}
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-t border-border/40 shadow-lg">
+        <div className="flex items-center justify-around px-2 py-2">
+          {navItems.slice(0, 5).map((item) => {
+            const isActive = location.pathname === item.path;
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={cn(
+                  'flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-all',
+                  isActive
+                    ? 'bg-primary/20 text-primary'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
+                )}
+              >
+                <item.icon className="h-5 w-5" />
+                <span className="text-[10px] font-medium">{t(item.labelKey).split(' ')[0]}</span>
+              </Link>
+            );
+          })}
+        </div>
+      </nav>
     </div>
   );
 };
