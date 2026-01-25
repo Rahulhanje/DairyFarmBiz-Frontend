@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
+import { AppLayout } from '@/components/layout/AppLayout';
 
 type ReportType = 'weekly' | 'monthly' | 'total' | 'custom';
 
@@ -94,10 +95,11 @@ export default function DownloadReport() {
   };
 
   return (
-    <div className="container mx-auto p-4 md:p-6 max-w-3xl">
-      <Card>
-        <CardHeader>
-          <div className="flex items-center gap-2">
+    <AppLayout>
+      <div className="container mx-auto p-4 md:p-6 max-w-3xl">
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
             <FileSpreadsheet className="h-6 w-6 text-green-600" />
             <CardTitle>Download Excel Report</CardTitle>
           </div>
@@ -213,5 +215,6 @@ export default function DownloadReport() {
         </CardContent>
       </Card>
     </div>
+    </AppLayout>
   );
 }
