@@ -19,7 +19,9 @@ const signupSchema = z.object({
     message: 'WhatsApp number must be exactly 10 digits',
   }),
   countryCode: z.string().default('+91'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  password: z.string()
+    .min(6, 'Password must be at least 6 characters')
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, 'Password must contain at least one uppercase letter, one lowercase letter, and one number'),
   confirmPassword: z.string(),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
@@ -67,10 +69,13 @@ const Signup: React.FC = () => {
       });
       // Redirect to email verification page
       navigate(`/verify-email?email=${encodeURIComponent(data.email)}`);
-    } catch (error) {
+    } catch (error: unknown) {
+      const errorMessage = error && typeof error === 'object' && 'message' in error 
+        ? (error as { message: string }).message 
+        : t('error_occurred');
       toast({
         title: t('failed'),
-        description: t('error_occurred'),
+        description: errorMessage,
         variant: 'destructive',
       });
     } finally {
