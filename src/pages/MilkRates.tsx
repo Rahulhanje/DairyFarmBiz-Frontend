@@ -7,8 +7,7 @@ import { format } from 'date-fns';
 import { milkRatesApi, CreateMilkRateData, MilkRate } from '@/lib/api';
 import { useLanguage } from '@/lib/i18n';
 import { AppLayout } from '@/components/layout/AppLayout';
-import { PageLoader } from '@/components/common/LoadingSpinner';
-import { EmptyState } from '@/components/common/EmptyState';
+import { PageLoader } from '@/components/common/LoadingSpinner';import { formatDateDisplay } from '@/lib/utils';import { EmptyState } from '@/components/common/EmptyState';
 import { ConfirmDialog } from '@/components/common/ConfirmDialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -139,7 +138,7 @@ const MilkRates: React.FC = () => {
   const formatDate = (dateStr: string | undefined) => {
     if (!dateStr) return 'N/A';
     try {
-      return format(new Date(dateStr), 'MMM d, yyyy');
+      return formatDateDisplay(dateStr);
     } catch {
       return 'Invalid date';
     }

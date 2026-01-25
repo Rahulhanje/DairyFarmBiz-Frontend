@@ -64,6 +64,7 @@ export const translations = {
     nav_breeding: 'Breeding',
     nav_notifications: 'Notifications',
     nav_settings: 'Settings',
+    nav_reports: 'Reports',
     
     // Dashboard
     dashboard_title: 'Dashboard',
@@ -246,6 +247,7 @@ export const translations = {
     nav_breeding: 'ಸಂತಾನೋತ್ಪತ್ತಿ',
     nav_notifications: 'ಅಧಿಸೂಚನೆಗಳು',
     nav_settings: 'ಸೆಟ್ಟಿಂಗ್‌ಗಳು',
+    nav_reports: 'ವರದಿಗಳು',
     
     // Dashboard
     dashboard_title: 'ಡ್ಯಾಶ್‌ಬೋರ್ಡ್',

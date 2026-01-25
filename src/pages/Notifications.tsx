@@ -8,6 +8,7 @@ import { notificationsApi, CreateNotificationData } from '@/lib/api';
 import { useLanguage } from '@/lib/i18n';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { PageLoader } from '@/components/common/LoadingSpinner';
+import { formatDateTimeDisplay } from '@/lib/utils';
 import { EmptyState } from '@/components/common/EmptyState';
 import { ConfirmDialog } from '@/components/common/ConfirmDialog';
 import { Button } from '@/components/ui/button';
@@ -155,7 +156,7 @@ const Notifications: React.FC = () => {
           <div>
             <h1 className="text-2xl font-bold text-foreground">{t('notifications_title')}</h1>
             <p className="text-muted-foreground text-sm">
-              {stats?.byStatus?.pending || 0} pending, {stats?.byStatus?.sent || 0} sent
+              {stats?.pending || 0} pending, {stats?.sent || 0} sent
             </p>
           </div>
           
@@ -263,22 +264,22 @@ const Notifications: React.FC = () => {
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
-              <p className="text-2xl font-bold text-amber-600">{stats?.byStatus?.pending || 0}</p>
+              <p className="text-2xl font-bold text-amber-600">{stats?.pending || 0}</p>
               <p className="text-sm text-muted-foreground">{t('status_pending')}</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
-              <p className="text-2xl font-bold text-emerald-600">{stats?.byStatus?.sent || 0}</p>
+              <p className="text-2xl font-bold text-emerald-600">{stats?.sent || 0}</p>
               <p className="text-sm text-muted-foreground">{t('status_sent')}</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
               <div className="flex items-center justify-center gap-2">
-                <Mail className={`h-5 w-5 ${emailStatus?.configured && emailStatus?.connected ? 'text-emerald-500' : 'text-destructive'}`} />
-                <span className={`text-sm font-medium ${emailStatus?.configured && emailStatus?.connected ? 'text-emerald-600' : 'text-destructive'}`}>
-                  {emailStatus?.configured && emailStatus?.connected ? 'Active' : 'Inactive'}
+                <Mail className={`h-5 w-5 ${emailStatus?.isActive ? 'text-emerald-500' : 'text-destructive'}`} />
+                <span className={`text-sm font-medium ${emailStatus?.isActive ? 'text-emerald-600' : 'text-destructive'}`}>
+                  {emailStatus?.isActive ? 'Active' : 'Inactive'}
                 </span>
               </div>
               <p className="text-sm text-muted-foreground">{t('email_status')}</p>
@@ -349,7 +350,7 @@ const Notifications: React.FC = () => {
                         )}
                         <p className="text-sm text-muted-foreground mt-1">{notification.message}</p>
                         <p className="text-xs text-muted-foreground mt-2">
-                          {t('scheduled_date')}: {format(new Date(notification.scheduledDate), 'MMM d, yyyy h:mm a')}
+                          {t('scheduled_date')}: {formatDateTimeDisplay(notification.scheduledDate)}
                         </p>
                       </div>
                       

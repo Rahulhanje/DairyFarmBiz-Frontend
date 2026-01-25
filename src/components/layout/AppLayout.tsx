@@ -16,7 +16,8 @@ import {
   Bell, 
   LogOut,
   Globe,
-  User
+  User,
+  FileSpreadsheet
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -32,6 +33,7 @@ const navItems = [
   { path: '/expenses', icon: Receipt, labelKey: 'nav_expenses' as const },
   { path: '/breeding', icon: Baby, labelKey: 'nav_breeding' as const },
   { path: '/notifications', icon: Bell, labelKey: 'nav_notifications' as const },
+  { path: '/reports', icon: FileSpreadsheet, labelKey: 'nav_reports' as const },
 ];
 
 export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {

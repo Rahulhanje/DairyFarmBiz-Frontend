@@ -23,6 +23,7 @@ const Expenses = lazy(() => import("./pages/Expenses"));
 const Breeding = lazy(() => import("./pages/Breeding"));
 const Notifications = lazy(() => import("./pages/Notifications"));
 const Profile = lazy(() => import("./pages/Profile"));
+const DownloadReport = lazy(() => import("./pages/DownloadReport"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
@@ -52,6 +53,7 @@ const AppRoutes = () => (
       <Route path="/breeding" element={<ProtectedRoute><Breeding /></ProtectedRoute>} />
       <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
       <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+      <Route path="/reports" element={<ProtectedRoute><DownloadReport /></ProtectedRoute>} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   </Suspense>

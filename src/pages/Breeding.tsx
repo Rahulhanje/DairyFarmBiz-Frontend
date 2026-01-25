@@ -8,6 +8,7 @@ import { breedingApi, animalsApi, CreateBreedingData, BreedingRecord } from '@/l
 import { useLanguage } from '@/lib/i18n';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { PageLoader } from '@/components/common/LoadingSpinner';
+import { formatDateDisplay } from '@/lib/utils';
 import { EmptyState } from '@/components/common/EmptyState';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -47,7 +48,7 @@ const formatDate = (dateStr?: string): string => {
   try {
     const date = new Date(dateStr);
     if (isNaN(date.getTime())) return '-';
-    return format(date, 'MMM d, yyyy');
+    return formatDateDisplay(date);
   } catch {
     return '-';
   }
