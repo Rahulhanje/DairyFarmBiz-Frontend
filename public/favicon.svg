@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="milk-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Milk drop shape -->
+  <path d="M16 4 C16 4, 10 10, 10 16 C10 21, 12.5 26, 16 26 C19.5 26, 22 21, 22 16 C22 10, 16 4, 16 4 Z" 
+        fill="url(#milk-gradient)" 
+        stroke="#2563eb" 
+        stroke-width="1"/>
+  <!-- Shine effect -->
+  <ellipse cx="14" cy="12" rx="3" ry="4" fill="white" opacity="0.4"/>
+</svg>

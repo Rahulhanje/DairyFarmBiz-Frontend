@@ -1,38 +1,75 @@
-# Welcome to your Lovable project
+# DairyFarm Biz - Dairy Farm Management System
 
-## Project info
+A comprehensive web-based dairy farm management solution built with React and Node.js.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Features
 
-## How can I edit this code?
+- 🐄 **Animal Management**: Track cattle inventory, health records, and breeding history
+- 🥛 **Milk Collection**: Record daily milk production with session-wise tracking
+- 💰 **Expense Tracking**: Manage farm expenses with category-wise breakdown
+- 🧬 **Breeding Management**: Track insemination and pregnancy status
+- 📊 **Dashboard**: Visual analytics and key metrics at a glance
+- 📥 **Excel Reports**: Download comprehensive reports (weekly, monthly, custom ranges)
+- 🔔 **Notifications**: Stay updated with important farm activities
+- 🔐 **Authentication**: Secure login with email verification and password reset
+- 🌐 **Multilingual**: Support for English and Kannada languages
 
-There are several ways of editing your application.
+## Tech Stack
 
-**Use Lovable**
+**Frontend:**
+- React 18 with TypeScript
+- Vite for fast development
+- shadcn/ui component library
+- Tailwind CSS for styling
+- TanStack Query for data fetching
+- Recharts for data visualization
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+**Backend:**
+- Node.js with Express
+- MongoDB with Mongoose ODM
+- JWT authentication
+- Email notifications (Gmail SMTP)
+- ExcelJS for report generation
 
-Changes made via Lovable will be committed automatically to this repo.
+## Getting Started
 
 **Use your preferred IDE**
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+Clone the repository and follow these steps:
 
 The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
-Follow these steps:
+### Frontend Setup
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+```bash
+# Clone the repository
+git clone https://github.com/Rahulhanje/DairyFarmBiz-Frontend.git
+cd DairyFarmBiz-Frontend
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Install dependencies
+npm install
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Create .env file (copy from .env.example)
+cp .env.example .env
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
+npm run dev
+```
+
+### Backend Setup
+
+```bash
+# Clone the backend repository
+git clone https://github.com/Rahulhanje/DairyFarmBiz-backend.git
+cd DairyFarmBiz-backend
+
+# Install dependencies
+npm install
+
+# Create .env file with your MongoDB URI and other configs
+# See .env.example for required variables
+
+# Start the server
 npm run dev
 ```
 
@@ -50,24 +87,63 @@ npm run dev
 - Click on "New codespace" to launch a new Codespace environment.
 - Edit files directly within the Codespace and commit and push your changes once you're done.
 
-## What technologies are used for this project?
+## Environment Variables
 
-This project is built with:
+### Frontend (.env)
+```bash
+VITE_API_BASE_URL=https://your-backend-url.com/api/v1
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Backend (.env)
+```bash
+NODE_ENV=production
+PORT=5000
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+JWT_EXPIRES_IN=7d
 
-## How can I deploy this project?
+# Email Configuration (Optional)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your_email@gmail.com
+SMTP_PASS=your_app_password
+```
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+## Deployment
 
-## Can I connect a custom domain to my Lovable project?
+**Frontend (Vercel)**
+- Connect your GitHub repository
+- Build command: `npm run build`
+- Output directory: `dist`
+- Add environment variable: `VITE_API_BASE_URL`
 
-Yes, you can!
+**Backend (Render)**
+- Build command: `npm install && npm run build`
+- Start command: `npm start`
+- Add all required environment variables
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Project Structure
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+```
+frontend/
+├── src/
+│   ├── components/     # Reusable UI components
+│   ├── pages/          # Page components
+│   ├── contexts/       # React contexts (Auth, Language)
+│   ├── lib/            # API client and utilities
+│   └── hooks/          # Custom React hooks
+├── public/             # Static assets
+└── dist/               # Production build
+
+backend/
+├── src/
+│   ├── modules/        # Feature modules (auth, animal, milk, etc.)
+│   ├── middlewares/    # Express middlewares
+│   ├── config/         # Configuration files
+│   └── utils/          # Utility functions
+└── dist/               # Compiled TypeScript
+```
+
+## License
+
+This project is private and proprietary.
