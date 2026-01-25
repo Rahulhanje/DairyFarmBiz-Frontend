@@ -253,6 +253,7 @@ const Dashboard: React.FC = () => {
                       stroke="hsl(var(--muted-foreground))"
                     />
                     <Tooltip 
+                      formatter={(value: number) => value.toFixed(2)}
                       contentStyle={{ 
                         backgroundColor: 'hsl(var(--card))',
                         border: '1px solid hsl(var(--border))',
@@ -290,7 +291,10 @@ const Dashboard: React.FC = () => {
             <CardContent>
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={expenseTrends?.trends || []}>
+                  <LineChart data={expenseTrends?.trends?.map(t => ({
+                    date: t.date,
+                    value: t.total
+                  })) || []}>
                     <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                     <XAxis 
                       dataKey="date" 
@@ -302,6 +306,7 @@ const Dashboard: React.FC = () => {
                       stroke="hsl(var(--muted-foreground))"
                     />
                     <Tooltip 
+                      formatter={(value: number) => `₹${value.toFixed(2)}`}
                       contentStyle={{ 
                         backgroundColor: 'hsl(var(--card))',
                         border: '1px solid hsl(var(--border))',
@@ -330,7 +335,10 @@ const Dashboard: React.FC = () => {
             <CardContent>
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={profitTrends?.trends || []}>
+                  <BarChart data={profitTrends?.trends?.map(t => ({
+                    date: t.date,
+                    value: t.profit
+                  })) || []}>
                     <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                     <XAxis 
                       dataKey="date" 
@@ -342,6 +350,7 @@ const Dashboard: React.FC = () => {
                       stroke="hsl(var(--muted-foreground))"
                     />
                     <Tooltip 
+                      formatter={(value: number) => `₹${value.toFixed(2)}`}
                       contentStyle={{ 
                         backgroundColor: 'hsl(var(--card))',
                         border: '1px solid hsl(var(--border))',
@@ -386,6 +395,7 @@ const Dashboard: React.FC = () => {
                       ))}
                     </Pie>
                     <Tooltip 
+                      formatter={(value: number) => `₹${value.toFixed(2)}`}
                       contentStyle={{ 
                         backgroundColor: 'hsl(var(--card))',
                         border: '1px solid hsl(var(--border))',

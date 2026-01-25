@@ -155,7 +155,7 @@ const Notifications: React.FC = () => {
           <div>
             <h1 className="text-2xl font-bold text-foreground">{t('notifications_title')}</h1>
             <p className="text-muted-foreground text-sm">
-              {stats?.pending || 0} pending, {stats?.sent || 0} sent
+              {stats?.byStatus?.pending || 0} pending, {stats?.byStatus?.sent || 0} sent
             </p>
           </div>
           
@@ -263,22 +263,22 @@ const Notifications: React.FC = () => {
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
-              <p className="text-2xl font-bold text-amber-600">{stats?.pending || 0}</p>
+              <p className="text-2xl font-bold text-amber-600">{stats?.byStatus?.pending || 0}</p>
               <p className="text-sm text-muted-foreground">{t('status_pending')}</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
-              <p className="text-2xl font-bold text-emerald-600">{stats?.sent || 0}</p>
+              <p className="text-2xl font-bold text-emerald-600">{stats?.byStatus?.sent || 0}</p>
               <p className="text-sm text-muted-foreground">{t('status_sent')}</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
               <div className="flex items-center justify-center gap-2">
-                <Mail className={`h-5 w-5 ${emailStatus?.isActive ? 'text-emerald-500' : 'text-destructive'}`} />
-                <span className={`text-sm font-medium ${emailStatus?.isActive ? 'text-emerald-600' : 'text-destructive'}`}>
-                  {emailStatus?.isActive ? 'Active' : 'Inactive'}
+                <Mail className={`h-5 w-5 ${emailStatus?.configured && emailStatus?.connected ? 'text-emerald-500' : 'text-destructive'}`} />
+                <span className={`text-sm font-medium ${emailStatus?.configured && emailStatus?.connected ? 'text-emerald-600' : 'text-destructive'}`}>
+                  {emailStatus?.configured && emailStatus?.connected ? 'Active' : 'Inactive'}
                 </span>
               </div>
               <p className="text-sm text-muted-foreground">{t('email_status')}</p>
