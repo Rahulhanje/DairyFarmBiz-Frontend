@@ -12,6 +12,9 @@ import { ProtectedRoute } from "@/components/common/ProtectedRoute";
 // Lazy load all pages for faster initial load
 const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
+const VerifyEmail = lazy(() => import("./pages/VerifyEmail"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Animals = lazy(() => import("./pages/Animals"));
 const MilkRates = lazy(() => import("./pages/MilkRates"));
@@ -19,6 +22,7 @@ const MilkCollection = lazy(() => import("./pages/MilkCollection"));
 const Expenses = lazy(() => import("./pages/Expenses"));
 const Breeding = lazy(() => import("./pages/Breeding"));
 const Notifications = lazy(() => import("./pages/Notifications"));
+const Profile = lazy(() => import("./pages/Profile"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
@@ -37,6 +41,9 @@ const AppRoutes = () => (
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/verify-email" element={<VerifyEmail />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/animals" element={<ProtectedRoute><Animals /></ProtectedRoute>} />
       <Route path="/milk-rates" element={<ProtectedRoute><MilkRates /></ProtectedRoute>} />
@@ -44,6 +51,7 @@ const AppRoutes = () => (
       <Route path="/expenses" element={<ProtectedRoute><Expenses /></ProtectedRoute>} />
       <Route path="/breeding" element={<ProtectedRoute><Breeding /></ProtectedRoute>} />
       <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
+      <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   </Suspense>

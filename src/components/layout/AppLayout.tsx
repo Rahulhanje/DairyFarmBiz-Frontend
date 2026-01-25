@@ -15,7 +15,8 @@ import {
   Baby, 
   Bell, 
   LogOut,
-  Globe
+  Globe,
+  User
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -89,6 +90,17 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
 
       {/* Footer */}
       <div className="p-4 border-t border-border space-y-2">
+        <Button
+          variant="ghost"
+          className="w-full justify-start gap-3"
+          onClick={() => {
+            navigate('/profile');
+            setIsOpen(false);
+          }}
+        >
+          <User className="h-5 w-5" />
+          {t('profile_settings')}
+        </Button>
         <Button
           variant="ghost"
           className="w-full justify-start gap-3"

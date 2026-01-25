@@ -53,6 +53,7 @@ export const translations = {
     signup_success: 'Account created successfully',
     logout_success: 'Logged out successfully',
     invalid_credentials: 'Invalid email or password',
+    profile_settings: 'Profile Settings',
     
     // Navigation
     nav_dashboard: 'Dashboard',
@@ -234,6 +235,7 @@ export const translations = {
     signup_success: 'ಖಾತೆ ಯಶಸ್ವಿಯಾಗಿ ರಚಿಸಲಾಗಿದೆ',
     logout_success: 'ಯಶಸ್ವಿಯಾಗಿ ಲಾಗ್ ಔಟ್ ಆಗಿದೆ',
     invalid_credentials: 'ಅಮಾನ್ಯ ಇಮೇಲ್ ಅಥವಾ ಪಾಸ್‌ವರ್ಡ್',
+    profile_settings: 'ಪ್ರೊಫೈಲ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳು',
     
     // Navigation
     nav_dashboard: 'ಡ್ಯಾಶ್‌ಬೋರ್ಡ್',

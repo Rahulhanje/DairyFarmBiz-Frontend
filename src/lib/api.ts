@@ -139,6 +139,18 @@ export const authApi = {
   signup: (name: string, email: string, password: string, phone: string, countryCode?: string) =>
     api.post<{ token: string; user: User }>('/auth/signup', { name, email, password, phone, countryCode: countryCode || '+91' }),
   getMe: () => api.get<User>('/auth/me'),
+  updateProfile: (data: { name?: string; phone?: string; countryCode?: string }) =>
+    api.put<User>('/auth/profile', data),
+  updatePassword: (currentPassword: string, newPassword: string) =>
+    api.put('/auth/password', { currentPassword, newPassword }),
+  sendVerificationOTP: (email: string) =>
+    api.post<{ success: boolean; message: string }>('/auth/send-verification-otp', { email }),
+  verifyEmail: (email: string, otp: string) =>
+    api.post<{ success: boolean; message: string }>('/auth/verify-email', { email, otp }),
+  forgotPassword: (email: string) =>
+    api.post<{ success: boolean; message: string }>('/auth/forgot-password', { email }),
+  resetPassword: (email: string, otp: string, newPassword: string) =>
+    api.post<{ success: boolean; message: string }>('/auth/reset-password', { email, otp, newPassword }),
 };
 
 // Dashboard API
@@ -229,6 +241,10 @@ export interface User {
   id: string;
   name: string;
   email: string;
+  phone?: string;
+  countryCode?: string;
+  role?: string;
+  isEmailVerified?: boolean;
 }
 
 export interface DashboardSummary {

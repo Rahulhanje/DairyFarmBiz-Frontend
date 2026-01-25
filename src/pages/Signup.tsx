@@ -63,9 +63,10 @@ const Signup: React.FC = () => {
       await signup(data.name, data.email, data.password, data.phone, data.countryCode);
       toast({
         title: t('success'),
-        description: t('signup_success'),
+        description: 'Account created! Please verify your email to continue.',
       });
-      setSignupSuccess(true);
+      // Redirect to email verification page
+      navigate(`/verify-email?email=${encodeURIComponent(data.email)}`);
     } catch (error) {
       toast({
         title: t('failed'),
