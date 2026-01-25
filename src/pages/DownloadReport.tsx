@@ -39,7 +39,9 @@ export default function DownloadReport() {
     setLoading(true);
 
     try {
-      let url = `http://192.168.1.12:5000/api/v1/reports/${reportType}`;
+      // Get API base URL from environment or default
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://dairyfarmbiz-backend.onrender.com/api/v1';
+      let url = `${API_BASE_URL}/reports/${reportType}`;
       if (reportType === 'custom') {
         url += `?startDate=${startDate}&endDate=${endDate}`;
       }
