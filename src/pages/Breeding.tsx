@@ -743,7 +743,6 @@ const Breeding: React.FC = () => {
                   placeholder="Optional notes"
                 />
               </div>
-(newStatus === 'delivered' && !deliveryDate) || 
               <div className="flex gap-2 justify-end">
                 <Button variant="outline" onClick={() => setUpdateRecord(null)}>
                   {t('cancel')}
