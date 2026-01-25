@@ -425,7 +425,7 @@ export interface DailySummary {
 export interface Expense {
   _id: string;
   name: string;
-  category: 'feed' | 'medicine' | 'labor' | 'equipment' | 'maintenance' | 'transport' | 'other';
+  category: 'feed' | 'medicine' | 'doctor' | 'labor' | 'equipment' | 'maintenance' | 'transport' | 'other';
   amount: number;
   date: string;
   notes?: string;
@@ -435,7 +435,7 @@ export interface Expense {
 
 export interface CreateExpenseData {
   name: string;
-  category: 'feed' | 'medicine' | 'labor' | 'equipment' | 'maintenance' | 'transport' | 'other';
+  category: 'feed' | 'medicine' | 'doctor' | 'labor' | 'equipment' | 'maintenance' | 'transport' | 'other';
   amount: number;
   date?: string;
   notes?: string;
