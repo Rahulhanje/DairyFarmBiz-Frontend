@@ -1,5 +1,5 @@
 // Set your backend URL here or use environment variable
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://dairyfarmbiz-backend.onrender.com/api/v1';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://dairyfarmbiz-backend.onrender.com/api/v1';
 
 interface ApiError {
   message: string;
