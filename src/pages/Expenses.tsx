@@ -70,7 +70,7 @@ const Expenses: React.FC = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  
+
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -120,7 +120,7 @@ const Expenses: React.FC = () => {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Partial<CreateExpenseData> }) => 
+    mutationFn: ({ id, data }: { id: string; data: Partial<CreateExpenseData> }) =>
       expensesApi.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['expenses'] });
@@ -228,7 +228,7 @@ const Expenses: React.FC = () => {
             <h1 className="text-2xl font-bold text-foreground">{t('expenses_title')}</h1>
             <p className="text-muted-foreground text-sm">Track and manage all your farm expenses</p>
           </div>
-          
+
           <Dialog open={isAddOpen} onOpenChange={handleAddOpen}>
             <DialogTrigger asChild>
               <Button>
@@ -236,7 +236,7 @@ const Expenses: React.FC = () => {
                 {t('add_expense')}
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-md">
+            <DialogContent className="max-w-md w-[calc(100vw-2rem)] max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>{t('add_expense')}</DialogTitle>
               </DialogHeader>
@@ -291,8 +291,8 @@ const Expenses: React.FC = () => {
                       <FormItem>
                         <FormLabel>{t('amount')} (₹)</FormLabel>
                         <FormControl>
-                          <Input 
-                            type="number" 
+                          <Input
+                            type="number"
                             step="0.01"
                             {...field}
                             onChange={(e) => field.onChange(Number(e.target.value))}
@@ -356,7 +356,7 @@ const Expenses: React.FC = () => {
                   ₹{(summary?.total || 0).toLocaleString()}
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  {data?.data?.length || 0} expense(s) 
+                  {data?.data?.length || 0} expense(s)
                   {(startDate || endDate || categoryFilter !== 'all') && ' (filtered)'}
                 </p>
               </div>
@@ -367,7 +367,7 @@ const Expenses: React.FC = () => {
           </CardContent>
         </Card>
 
-        
+
 
         {/* Filters */}
         <div className="flex flex-col sm:flex-row gap-4">
@@ -376,7 +376,7 @@ const Expenses: React.FC = () => {
             endDate={endDate}
             onDateChange={handleDateChange}
           />
-          
+
           <Select value={categoryFilter} onValueChange={setCategoryFilter}>
             <SelectTrigger className="w-full sm:w-48">
               <SelectValue placeholder={t('category')} />
@@ -505,7 +505,7 @@ const Expenses: React.FC = () => {
 
         {/* Edit Dialog */}
         <Dialog open={!!editExpense} onOpenChange={(open) => !open && setEditExpense(null)}>
-          <DialogContent className="max-w-md">
+          <DialogContent className="max-w-md w-[calc(100vw-2rem)] max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>{t('edit')}</DialogTitle>
             </DialogHeader>
@@ -560,8 +560,8 @@ const Expenses: React.FC = () => {
                     <FormItem>
                       <FormLabel>{t('amount')} (₹)</FormLabel>
                       <FormControl>
-                        <Input 
-                          type="number" 
+                        <Input
+                          type="number"
                           step="0.01"
                           {...field}
                           onChange={(e) => field.onChange(Number(e.target.value))}
@@ -631,7 +631,7 @@ const Expenses: React.FC = () => {
               <CardTitle className="text-base">{t('expense_summary')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="h-64">
+              <div className="h-64 sm:h-80">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
@@ -644,15 +644,15 @@ const Expenses: React.FC = () => {
                       dataKey="value"
                     >
                       {pieData.map((_, index) => (
-                        <Cell 
-                          key={`cell-${index}`} 
-                          fill={CHART_COLORS[index % CHART_COLORS.length]} 
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={CHART_COLORS[index % CHART_COLORS.length]}
                         />
                       ))}
                     </Pie>
-                    <Tooltip 
+                    <Tooltip
                       formatter={(value: number) => `₹${value.toLocaleString()}`}
-                      contentStyle={{ 
+                      contentStyle={{
                         backgroundColor: 'hsl(var(--card))',
                         border: '1px solid hsl(var(--border))',
                         borderRadius: '8px'
