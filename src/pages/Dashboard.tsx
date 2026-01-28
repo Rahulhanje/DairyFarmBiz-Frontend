@@ -8,10 +8,10 @@ import { StatCard } from '@/components/common/StatCard';
 import { DateRangePicker } from '@/components/common/DateRangePicker';
 import { PageLoader } from '@/components/common/LoadingSpinner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { 
-  IndianRupee, 
-  Receipt, 
-  TrendingUp, 
+import {
+  IndianRupee,
+  Receipt,
+  TrendingUp,
   PawPrint,
   Milk,
   Baby,
@@ -97,26 +97,26 @@ const Dashboard: React.FC = () => {
   const isProfitable = profitLoss >= 0;
 
   // Prepare expense breakdown data for pie chart from actual data
-  const expenseBreakdown = summary?.expenses?.byCategory 
+  const expenseBreakdown = summary?.expenses?.byCategory
     ? Object.entries(summary.expenses.byCategory).map(([name, value]) => {
-        // Handle special cases like doctor, maintenance, transport
-        let displayName: string;
-        if (name === 'doctor') {
-          displayName = 'Doctor';
-        } else if (name === 'maintenance') {
-          displayName = 'Maintenance';
-        } else if (name === 'transport') {
-          displayName = 'Transport';
-        } else {
-          // Try translation, fallback to capitalized name
-          try {
-            displayName = t(`cat_${name}` as any);
-          } catch {
-            displayName = name.charAt(0).toUpperCase() + name.slice(1);
-          }
+      // Handle special cases like doctor, maintenance, transport
+      let displayName: string;
+      if (name === 'doctor') {
+        displayName = 'Doctor';
+      } else if (name === 'maintenance') {
+        displayName = 'Maintenance';
+      } else if (name === 'transport') {
+        displayName = 'Transport';
+      } else {
+        // Try translation, fallback to capitalized name
+        try {
+          displayName = t(`cat_${name}` as any);
+        } catch {
+          displayName = name.charAt(0).toUpperCase() + name.slice(1);
         }
-        return { name: displayName, value };
-      })
+      }
+      return { name: displayName, value };
+    })
     : [];
 
   return (
@@ -243,37 +243,37 @@ const Dashboard: React.FC = () => {
                     buffalo: t.buffalo?.quantity ?? 0,
                   })) || []}>
                     <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                    <XAxis 
-                      dataKey="date" 
+                    <XAxis
+                      dataKey="date"
                       tick={{ fontSize: 12 }}
                       stroke="hsl(var(--muted-foreground))"
                     />
-                    <YAxis 
+                    <YAxis
                       tick={{ fontSize: 12 }}
                       stroke="hsl(var(--muted-foreground))"
                     />
-                    <Tooltip 
+                    <Tooltip
                       formatter={(value: number) => value.toFixed(2)}
-                      contentStyle={{ 
+                      contentStyle={{
                         backgroundColor: 'hsl(var(--card))',
                         border: '1px solid hsl(var(--border))',
                         borderRadius: '8px'
                       }}
                     />
                     <Legend />
-                    <Line 
-                      type="monotone" 
-                      dataKey="cow" 
+                    <Line
+                      type="monotone"
+                      dataKey="cow"
                       name={t('cows')}
-                      stroke={CHART_COLORS[0]} 
+                      stroke={CHART_COLORS[0]}
                       strokeWidth={2}
                       dot={false}
                     />
-                    <Line 
-                      type="monotone" 
-                      dataKey="buffalo" 
+                    <Line
+                      type="monotone"
+                      dataKey="buffalo"
                       name={t('buffalos')}
-                      stroke={CHART_COLORS[1]} 
+                      stroke={CHART_COLORS[1]}
                       strokeWidth={2}
                       dot={false}
                     />
@@ -293,31 +293,31 @@ const Dashboard: React.FC = () => {
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={expenseTrends?.trends?.map(t => ({
                     date: t.date,
-                    value: t.total
+                    value: t.value
                   })) || []}>
                     <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                    <XAxis 
-                      dataKey="date" 
+                    <XAxis
+                      dataKey="date"
                       tick={{ fontSize: 12 }}
                       stroke="hsl(var(--muted-foreground))"
                     />
-                    <YAxis 
+                    <YAxis
                       tick={{ fontSize: 12 }}
                       stroke="hsl(var(--muted-foreground))"
                     />
-                    <Tooltip 
+                    <Tooltip
                       formatter={(value: number) => `₹${value.toFixed(2)}`}
-                      contentStyle={{ 
+                      contentStyle={{
                         backgroundColor: 'hsl(var(--card))',
                         border: '1px solid hsl(var(--border))',
                         borderRadius: '8px'
                       }}
                     />
-                    <Line 
-                      type="monotone" 
-                      dataKey="value" 
+                    <Line
+                      type="monotone"
+                      dataKey="value"
                       name={t('total_expenses')}
-                      stroke={CHART_COLORS[2]} 
+                      stroke={CHART_COLORS[2]}
                       strokeWidth={2}
                       dot={false}
                     />
@@ -337,28 +337,28 @@ const Dashboard: React.FC = () => {
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={profitTrends?.trends?.map(t => ({
                     date: t.date,
-                    value: t.profit
+                    value: t.value
                   })) || []}>
                     <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                    <XAxis 
-                      dataKey="date" 
+                    <XAxis
+                      dataKey="date"
                       tick={{ fontSize: 12 }}
                       stroke="hsl(var(--muted-foreground))"
                     />
-                    <YAxis 
+                    <YAxis
                       tick={{ fontSize: 12 }}
                       stroke="hsl(var(--muted-foreground))"
                     />
-                    <Tooltip 
+                    <Tooltip
                       formatter={(value: number) => `₹${value.toFixed(2)}`}
-                      contentStyle={{ 
+                      contentStyle={{
                         backgroundColor: 'hsl(var(--card))',
                         border: '1px solid hsl(var(--border))',
                         borderRadius: '8px'
                       }}
                     />
-                    <Bar 
-                      dataKey="value" 
+                    <Bar
+                      dataKey="value"
                       name={t('profit_loss')}
                       fill={CHART_COLORS[0]}
                       radius={[4, 4, 0, 0]}
@@ -388,15 +388,15 @@ const Dashboard: React.FC = () => {
                       dataKey="value"
                     >
                       {expenseBreakdown.map((_, index) => (
-                        <Cell 
-                          key={`cell-${index}`} 
-                          fill={CHART_COLORS[index % CHART_COLORS.length]} 
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={CHART_COLORS[index % CHART_COLORS.length]}
                         />
                       ))}
                     </Pie>
-                    <Tooltip 
+                    <Tooltip
                       formatter={(value: number) => `₹${value.toFixed(2)}`}
-                      contentStyle={{ 
+                      contentStyle={{
                         backgroundColor: 'hsl(var(--card))',
                         border: '1px solid hsl(var(--border))',
                         borderRadius: '8px'

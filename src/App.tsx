@@ -10,6 +10,7 @@ import { PageLoader } from "@/components/common/LoadingSpinner";
 import { ProtectedRoute } from "@/components/common/ProtectedRoute";
 
 // Lazy load all pages for faster initial load
+const Home = lazy(() => import("./pages/Home"));
 const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
 const VerifyEmail = lazy(() => import("./pages/VerifyEmail"));
@@ -39,7 +40,7 @@ const queryClient = new QueryClient({
 const AppRoutes = () => (
   <Suspense fallback={<PageLoader />}>
     <Routes>
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/verify-email" element={<VerifyEmail />} />
