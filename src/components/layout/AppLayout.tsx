@@ -4,20 +4,21 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { 
-  Menu, 
-  X, 
-  LayoutDashboard, 
-  PawPrint, 
-  DollarSign, 
-  Milk, 
-  Receipt, 
-  Baby, 
-  Bell, 
+import {
+  Menu,
+  X,
+  LayoutDashboard,
+  PawPrint,
+  DollarSign,
+  Milk,
+  Receipt,
+  Baby,
+  Bell,
   LogOut,
   Globe,
   User,
-  FileSpreadsheet
+  FileSpreadsheet,
+  Home
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -56,7 +57,13 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className="p-4 border-b border-border">
-        <div className="flex items-center gap-3">
+        <div
+          className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
+          onClick={() => {
+            navigate('/');
+            setIsOpen(false);
+          }}
+        >
           <div className="h-10 w-10 rounded-lg bg-primary flex items-center justify-center">
             <Milk className="h-6 w-6 text-primary-foreground" />
           </div>
@@ -106,6 +113,17 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         <Button
           variant="ghost"
           className="w-full justify-start gap-3"
+          onClick={() => {
+            navigate('/');
+            setIsOpen(false);
+          }}
+        >
+          <Home className="h-5 w-5" />
+          Home
+        </Button>
+        <Button
+          variant="ghost"
+          className="w-full justify-start gap-3"
           onClick={toggleLanguage}
         >
           <Globe className="h-5 w-5" />
@@ -138,15 +156,23 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
               <NavContent />
             </SheetContent>
           </Sheet>
-          
-          <div className="flex items-center gap-2">
+
+          <div
+            className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
+            onClick={() => navigate('/')}
+          >
             <Milk className="h-5 w-5 text-primary" />
             <span className="font-semibold text-foreground">{t('app_name')}</span>
           </div>
-          
-          <Button variant="ghost" size="icon" onClick={toggleLanguage}>
-            <Globe className="h-5 w-5" />
-          </Button>
+
+          <div className="flex items-center gap-1">
+            <Button variant="ghost" size="icon" onClick={() => navigate('/')}>
+              <Home className="h-5 w-5" />
+            </Button>
+            <Button variant="ghost" size="icon" onClick={toggleLanguage}>
+              <Globe className="h-5 w-5" />
+            </Button>
+          </div>
         </div>
       </header>
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { dashboardApi } from '@/lib/api';
 import { useLanguage } from '@/lib/i18n';
@@ -7,7 +8,9 @@ import { AppLayout } from '@/components/layout/AppLayout';
 import { StatCard } from '@/components/common/StatCard';
 import { DateRangePicker } from '@/components/common/DateRangePicker';
 import { PageLoader } from '@/components/common/LoadingSpinner';
+import { OnboardingTour } from '@/components/common/OnboardingTour';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import {
   IndianRupee,
   Receipt,
@@ -15,7 +18,8 @@ import {
   PawPrint,
   Milk,
   Baby,
-  Bell
+  Bell,
+  Home
 } from 'lucide-react';
 import {
   LineChart,
@@ -43,6 +47,7 @@ const CHART_COLORS = [
 
 const Dashboard: React.FC = () => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
 
@@ -121,6 +126,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <AppLayout>
+      <OnboardingTour />
       <div className="space-y-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
