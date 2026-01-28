@@ -67,7 +67,16 @@ const Home: React.FC = () => {
     ];
 
     if (isLoading) {
-        return null;
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 flex items-center justify-center">
+                <div className="flex flex-col items-center gap-4">
+                    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg shadow-primary/25 animate-pulse">
+                        <Milk className="h-6 w-6 text-primary-foreground" />
+                    </div>
+                    <p className="text-muted-foreground">{t('loading')}...</p>
+                </div>
+            </div>
+        );
     }
 
     return (
